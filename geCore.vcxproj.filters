@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Prerequisites">
+      <UniqueIdentifier>{d6aed97f-635a-46b1-9ad8-2c1f4a17f788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphicsAPI">
+      <UniqueIdentifier>{f559ee40-0f65-4b9e-b3c2-45182c9b03c7}</UniqueIdentifier>
+      <Extensions>
+      </Extensions>
+    </Filter>
+    <Filter Include="Source Files\Config">
+      <UniqueIdentifier>{013537c0-e220-457c-8fbb-663db35ee9d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources">
+      <UniqueIdentifier>{db358f57-65a1-4aaf-a7d1-ba12287d0f4f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\gePrerequisitesCore.h">
+      <Filter>Source Files\Prerequisites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geCoreBaseApp.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geRenderAPI.h">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geGraphicsTypes.h">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geGameConfig.h">
+      <Filter>Source Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geTexture.h">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geVertexDeclaration.h">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geGraphicsInterfaces.h">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geInputLayout.h">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geRasterizationState.h">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geSamplerState.h">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geShader.h">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geResource.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\geCoreBaseApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geRenderAPI.cpp">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geGameConfig.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geTexture.cpp">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geVertexDeclaration.cpp">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geInputLayout.cpp">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geRasterizationState.cpp">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geSamplerState.cpp">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geShader.cpp">
+      <Filter>Source Files\GraphicsAPI</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,199 @@
+/*****************************************************************************/
+/**
+ * @file    geRenderAPI.h
+ * @author  Samuel Prince (samuel.prince.quezada@gmail.com)
+ * @date    2025/06/26
+ * @brief   Graphics API Interface and Module.
+ *
+ * Graphics API Interface and Module.
+ *
+ * @bug	    No known bugs.
+ */
+/*****************************************************************************/
+#pragma once
+
+/*****************************************************************************/
+/**
+ * Includes
+ */
+/*****************************************************************************/
+#include "gePrerequisitesCore.h"
+#include "geGraphicsTypes.h"
+#include "geGraphicsInterfaces.h"
+#include "geVertexDeclaration.h"
+#include "geInputLayout.h"
+#include "geShader.h"
+#include "geTexture.h"
+
+#include <geModule.h>
+#include <geColor.h>
+
+namespace geEngineSDK {
+  class GE_CORE_EXPORT RenderAPI : public Module<RenderAPI>
+  {
+   public:
+    RenderAPI();
+    virtual ~RenderAPI();
+
+    /**
+     * @brief Initializes the rendering API with the specified screen handle
+     *        and display mode.
+     * @param scrHandle A pointer to the screen or window handle to be used
+     *        for rendering.
+     * @param bFullScreen A boolean value indicating whether to initialize in
+     *        full screen mode (true) or windowed mode (false).
+     * @return Returns true if the rendering API was successfully initialized;
+     *         otherwise, returns false.
+     */
+    virtual bool
+    initRenderAPI(void* scrHandle, bool bFullScreen) = 0;
+
+    virtual bool
+    resizeSwapChain(uint32 newWidth, uint32 newHeight) = 0;
+
+    virtual bool
+    isMSAAFormatSupported(const TEXTURE_FORMAT::E format,
+                          int32& samplesPerPixel,
+                          int32& sampleQuality) const = 0;
+
+    virtual void
+    msaaResolveRenderTarget(const WeakSPtr<Texture>& pSrc,
+                            const WeakSPtr<Texture>& pDst) = 0;
+
+    virtual void
+    reportLiveObjects() = 0;
+
+    virtual WeakSPtr<Texture>
+    getBackBuffer() const = 0;
+
+    /*************************************************************************/
+    // Create Objects
+    /*************************************************************************/
+
+    virtual SPtr<Texture>
+    createTexture(uint32 width,
+                  uint32 height,
+                  TEXTURE_FORMAT::E format,
+                  uint32 bindFlags = BIND_FLAG::SHADER_RESOURCE,
+                  uint32 mipLevels = 1,
+                  RESOURCE_USAGE::E usage = RESOURCE_USAGE::DEFAULT,
+                  uint32 cpuAccessFlags = 0,
+                  uint32 sampleCount = 1,
+                  bool isMSAA = false,
+                  bool isCubeMap = false,
+                  uint32 arraySize = 1) = 0;
+
+    SPtr<Texture>
+    createDepthStencilTexture(uint32 width,
+                              uint32 height,
+                              TEXTURE_FORMAT::E format,
+                              uint32 sampleCount = 1,
+                              bool isMSAA = false);
+
+    SPtr<Texture>
+    createRenderTargetTexture(uint32 width,
+                              uint32 height,
+                              TEXTURE_FORMAT::E format,
+                              uint32 sampleCount = 1,
+                              bool isMSAA = false);
+
+    virtual SPtr<VertexDeclaration>
+    createVertexDeclaration(const Vector<VertexElement>& elements) = 0;
+
+    virtual SPtr<InputLayout>
+    createInputLayout(const WeakSPtr<VertexDeclaration>& descArray,
+                      const WeakSPtr<VertexShader>& pVS) = 0;
+
+    virtual SPtr<InputLayout>
+    createInputLayoutFromShader(const WeakSPtr<VertexShader>& pVS) = 0;
+
+    /*************************************************************************/
+    // Create Shaders
+    /*************************************************************************/
+
+#define CREATE_SHADER_PARAMS const Path& fileName,\
+                             const Vector<ShaderMacro>& pMacro,\
+                             const String& szEntryPoint,\
+                             const String& szShaderModel
+
+    virtual SPtr<VertexShader>
+    createVertexShader(CREATE_SHADER_PARAMS) = 0;
+
+    virtual SPtr<PixelShader>
+    createPixelShader(CREATE_SHADER_PARAMS) = 0;
+
+    virtual SPtr<GeometryShader>
+    createGeometryShader(CREATE_SHADER_PARAMS) = 0;
+
+    virtual SPtr<HullShader>
+    createHullShader(CREATE_SHADER_PARAMS) = 0;
+
+    virtual SPtr<DomainShader>
+    createDomainShader(CREATE_SHADER_PARAMS) = 0;
+
+    virtual SPtr<ComputeShader>
+    createComputeShader(CREATE_SHADER_PARAMS) = 0;
+
+    /*************************************************************************/
+    // Write Functions
+    /*************************************************************************/
+    virtual void
+    writeToResource(const WeakSPtr<GraphicsResource>& pResource,
+                    uint32 dstSubRes,
+                    const GRAPHICS_BOX* pDstBox,
+                    const void* pSrcData,
+                    uint32 srcRowPitch,
+                    uint32 srcDepthPitch,
+                    uint32 copyFlags = 0) = 0;
+
+    virtual MappedSubresource
+    mapToRead(const WeakSPtr<GraphicsResource>& pResource,
+              uint32 subResource = 0,
+              uint32 mapFlags = 0) = 0;
+
+    virtual void
+    unmap(const WeakSPtr<GraphicsResource>& pResource,
+          uint32 subResource = 0) = 0;
+
+    virtual void
+    copyResource(const WeakSPtr<GraphicsResource>& pSrcObj,
+                 const WeakSPtr<GraphicsResource>& pDstObj) = 0;
+
+    virtual void
+    generateMips(const WeakSPtr<Texture>& pTexture) = 0;
+
+    virtual void
+    clearRenderTarget(const WeakSPtr<Texture>& pRenderTarget,
+                      const LinearColor& color = LinearColor::Black) = 0;
+
+    void
+    clearRenderTarget(const RenderTarget& pRenderTarget,
+                      const LinearColor color = LinearColor::Black);
+
+    virtual void
+    clearDepthStencil(const WeakSPtr<Texture>& pDepthStencilView,
+                      uint32 flags = CLEAR_FLAG::DEPTH | CLEAR_FLAG::STENCIL,
+                      float depthVal = 1.0f,
+                      uint8 stencilVal = 0U) = 0;
+
+    virtual void
+    discardView(WeakSPtr<Texture> pTexture) = 0;
+
+    virtual void
+    present() = 0;
+
+    /*************************************************************************/ 
+    // Set Objects
+    /*************************************************************************/
+
+    virtual void
+    setImmediateContext() = 0;
+
+    virtual void
+    setViewports(const Vector<GRAPHICS_VIEWPORT>& viewports) = 0;
+
+    virtual void
+    setRenderTargets(const Vector<RenderTarget>& pTargets,
+                     const WeakSPtr<Texture>& pDepthStencilView) = 0;
+  };
+}
