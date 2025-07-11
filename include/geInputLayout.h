@@ -28,6 +28,9 @@ namespace geEngineSDK {
     InputLayout() = default;
     virtual ~InputLayout() = default;
 
+    virtual void
+    release() = 0;
+
     SPtr<VertexDeclaration>
     getVertexDeclaration() const {
       return m_vertexDeclaration;

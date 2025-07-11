@@ -21,10 +21,11 @@
 /*****************************************************************************/
 #include "gePrerequisitesCore.h"
 #include "geResource.h"
+#include "geVertexDeclaration.h"
 
 namespace geEngineSDK {
 
-  class GE_CORE_EXPORT GraphicsResource : public virtual Resource
+  class GE_CORE_EXPORT GraphicsResource : public Resource
   {
    public:
     virtual ~GraphicsResource() = default;
@@ -33,13 +34,36 @@ namespace geEngineSDK {
     _getGraphicsResource() const = 0;
   };
 
-  class GE_CORE_EXPORT GraphicsBuffer : public virtual GraphicsResource
+  class GE_CORE_EXPORT GraphicsBuffer : public GraphicsResource
   {
    public:
     virtual ~GraphicsBuffer() = default;
 
     virtual void*
     _getGraphicsBuffer() const = 0;
+  };
+
+  class GE_CORE_EXPORT VertexBuffer : public GraphicsBuffer
+  {
+   public:
+    virtual ~VertexBuffer() = default;
+
+    virtual WeakSPtr<VertexDeclaration>
+    getVertexDeclaration() const {
+      return m_pVertexDeclaration;
+    }
+
+   protected:
+    SPtr<VertexDeclaration> m_pVertexDeclaration;
+  };
+
+  class GE_CORE_EXPORT IndexBuffer : public GraphicsBuffer
+  {
+   public:
+    virtual ~IndexBuffer() = default;
+
+   protected:
+    uint32 m_indexSize = 0; // Size of index in bytes
   };
 
 }; // namespace geEngineSDK

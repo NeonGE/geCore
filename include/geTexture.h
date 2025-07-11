@@ -24,7 +24,7 @@
 
 namespace geEngineSDK {
 
-  class GE_CORE_EXPORT Texture : public virtual GraphicsResource
+  class GE_CORE_EXPORT Texture : public GraphicsResource
   {
    public:
     virtual ~Texture() = default;
