@@ -236,7 +236,12 @@ namespace geEngineSDK {
     setImmediateContext() = 0;
 
     virtual void
+    setTopology(PRIMITIVE_TOPOLOGY::E topologyType) = 0;
+
+    virtual void
     setViewports(const Vector<GRAPHICS_VIEWPORT>& viewports) = 0;
+
+
 
     virtual void
     setRenderTargets(const Vector<RenderTarget>& pTargets,

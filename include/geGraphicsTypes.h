@@ -170,6 +170,22 @@ namespace geEngineSDK {
     };
   }
 
+  namespace PRIMITIVE_TOPOLOGY {
+    enum E {
+      UNDEFINED = 0,
+      POINTLIST = 1,
+      LINELIST = 2,
+      LINESTRIP = 3,
+      TRIANGLELIST = 4,
+      TRIANGLESTRIP = 5,
+      TRIANGLEFAN = 6,
+      LINELIST_ADJ = 10,
+      LINESTRIP_ADJ = 11,
+      TRIANGLELIST_ADJ = 12,
+      TRIANGLESTRIP_ADJ = 13,
+    };
+  }
+
   namespace INDEX_BUFFER_FORMAT {
     enum E {
       R16_UINT = 1, // 16-bit unsigned integer index buffer
