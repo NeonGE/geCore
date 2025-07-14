@@ -30,6 +30,12 @@ namespace geEngineSDK {
    public:
     virtual ~GraphicsResource() = default;
 
+    /**
+     * @brief Releases resources held by the object.
+     */
+    virtual void
+    release() = 0;
+
     virtual void*
     _getGraphicsResource() const = 0;
   };
@@ -63,7 +69,69 @@ namespace geEngineSDK {
     virtual ~IndexBuffer() = default;
 
    protected:
-    uint32 m_indexSize = 0; // Size of index in bytes
+    GRAPHICS_FORMAT::E m_indexFormat = GRAPHICS_FORMAT::kR32_UINT;
+  };
+
+  using ConstantBuffer = GraphicsBuffer;
+
+  class GE_CORE_EXPORT RasterizerState
+  {
+   public:
+    virtual ~RasterizerState() = default;
+
+    /**
+     * @brief Releases resources held by the object.
+     */
+    virtual void
+    release() = 0;
+
+    virtual void
+    setDebugName(const String& name) = 0;
+  };
+
+  class GE_CORE_EXPORT BlendState
+  {
+   public:
+    virtual ~BlendState() = default;
+
+    /**
+     * @brief Releases resources held by the object.
+     */
+    virtual void
+    release() = 0;
+
+    virtual void
+    setDebugName(const String& name) = 0;
+  };
+
+  class GE_CORE_EXPORT DepthStencilState
+  {
+   public:
+    virtual ~DepthStencilState() = default;
+
+    /**
+     * @brief Releases resources held by the object.
+     */
+    virtual void
+    release() = 0;
+
+    virtual void
+    setDebugName(const String& name) = 0;
+  };
+
+  class GE_CORE_EXPORT SamplerState
+  {
+   public:
+    virtual ~SamplerState() = default;
+
+    /**
+     * @brief Releases resources held by the object.
+     */
+    virtual void
+    release() = 0;
+
+    virtual void
+    setDebugName(const String& name) = 0;
   };
 
 }; // namespace geEngineSDK

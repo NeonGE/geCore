@@ -30,12 +30,6 @@ namespace geEngineSDK {
     virtual ~Texture() = default;
 
     /**
-     * @brief Releases resources held by the object.
-     */
-    virtual void
-    release() = 0;
-
-    /**
      * @brief getDimensions() - Get the dimensions of the texture
      * @return Vector3 - The dimensions of the texture,
      *                   x and y are the width and height

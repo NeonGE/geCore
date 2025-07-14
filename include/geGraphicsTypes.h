@@ -42,7 +42,7 @@ namespace geEngineSDK {
   };
 
   //Texture format types
-  namespace TEXTURE_FORMAT {
+  namespace GRAPHICS_FORMAT {
     enum E {
       kUNKNOWN = 0,
       kR32G32B32A32_TYPELESS = 1,
@@ -170,6 +170,13 @@ namespace geEngineSDK {
     };
   }
 
+  namespace INDEX_BUFFER_FORMAT {
+    enum E {
+      R16_UINT = 1, // 16-bit unsigned integer index buffer
+      R32_UINT = 2  // 32-bit unsigned integer index buffer
+    };
+  }
+
   namespace RESOURCE_USAGE {
     enum E {
       DEFAULT = 0,
@@ -227,7 +234,7 @@ namespace geEngineSDK {
     uint32 height = 0;
     uint32 mipLevels = 0;
     uint32 arraySize = 0;
-    TEXTURE_FORMAT::E format = TEXTURE_FORMAT::kUNKNOWN;
+    GRAPHICS_FORMAT::E format = GRAPHICS_FORMAT::kUNKNOWN;
     struct SAMPLE_DESC
     {
       uint32 count = 0;
@@ -309,4 +316,311 @@ namespace geEngineSDK {
     String definition;
   };
 
-}
+  namespace FILL_MODE {
+    enum E {
+      WIREFRAME = 2,
+      SOLID = 3
+    };
+  }
+
+  namespace CULL_MODE {
+    enum E {
+      NONE = 1,
+      FRONT = 2,
+      BACK = 3
+    };
+  }
+
+  namespace CONSERVATIVE_RASTERIZATION_MODE {
+    enum E {
+      OFF = 0,
+      ON = 1
+    };
+  }
+
+  struct RASTERIZER_DESC
+  {
+    FILL_MODE::E fillMode;
+    CULL_MODE::E cullMode;
+    int32 frontCounterClockwise;
+    int32 depthBias;
+    float depthBiasClamp;
+    float slopeScaledDepthBias;
+    int32 depthClipEnable;
+    int32 scissorEnable;
+    int32 multisampleEnable;
+    int32 antialiasedLineEnable;
+    uint32 forcedSampleCount;
+    CONSERVATIVE_RASTERIZATION_MODE::E conservativeRaster;
+
+    explicit RASTERIZER_DESC(FORCE_INIT::E) {
+      fillMode = FILL_MODE::SOLID;
+      cullMode = CULL_MODE::BACK;
+      frontCounterClockwise = 0;
+      depthBias = 0;
+      depthBiasClamp = 0.0f;
+      slopeScaledDepthBias = 0.0f;
+      depthClipEnable = 1;
+      scissorEnable = 0;
+      multisampleEnable = 0;
+      antialiasedLineEnable = 0;
+      forcedSampleCount = 0;
+      conservativeRaster = CONSERVATIVE_RASTERIZATION_MODE::OFF;
+    }
+  };
+
+  namespace COMPARISON_FUNC {
+    enum E {
+      NEVER = 1,
+      LESS = 2,
+      EQUAL = 3,
+      LESS_EQUAL = 4,
+      GREATER = 5,
+      NOT_EQUAL = 6,
+      GREATER_EQUAL = 7,
+      ALWAYS = 8
+    };
+  }
+
+  namespace DEPTH_WRITE_MASK {
+    enum E {
+      ZERO = 0,
+      ALL = 1
+    };
+  }
+
+  namespace STENCIL_OP {
+    enum E {
+      KEEP = 1,
+      ZERO = 2,
+      REPLACE = 3,
+      INCR_SAT = 4,
+      DECR_SAT = 5,
+      INVERT = 6,
+      INCR = 7,
+      DECR = 8
+    };
+  }
+
+  struct DEPTH_STENCILOP_DESC
+  {
+    int32 stencilFailOp;
+    int32 stencilDepthFailOp;
+    int32 stencilPassOp;
+    int32 stencilFunc;
+  };
+
+  struct DEPTH_STENCIL_DESC
+  {
+    int32 depthEnable;
+    DEPTH_WRITE_MASK::E depthWriteMask;
+    COMPARISON_FUNC::E depthFunc;
+    int32 stencilEnable;
+    uint8 stencilReadMask;
+    uint8 stencilWriteMask;
+    DEPTH_STENCILOP_DESC frontFace;
+    DEPTH_STENCILOP_DESC backFace;
+
+    explicit DEPTH_STENCIL_DESC(FORCE_INIT::E)
+    {
+      depthEnable = 1;
+      depthWriteMask = DEPTH_WRITE_MASK::ALL;
+      depthFunc = COMPARISON_FUNC::LESS;
+      stencilEnable = 0;
+      stencilReadMask = 0xff;
+      stencilWriteMask = 0xff;
+      const DEPTH_STENCILOP_DESC defaultStencilOp = {
+        STENCIL_OP::KEEP,
+        STENCIL_OP::KEEP,
+        STENCIL_OP::KEEP,
+        COMPARISON_FUNC::ALWAYS
+      };
+      frontFace = defaultStencilOp;
+      backFace = defaultStencilOp;
+    }
+  };
+
+  namespace SAMPLER_FILTER {
+    enum E {
+      MIN_MAG_MIP_POINT = 0,
+      MIN_MAG_POINT_MIP_LINEAR = 0x1,
+      MIN_POINT_MAG_LINEAR_MIP_POINT = 0x4,
+      MIN_POINT_MAG_MIP_LINEAR = 0x5,
+      MIN_LINEAR_MAG_MIP_POINT = 0x10,
+      MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x11,
+      MIN_MAG_LINEAR_MIP_POINT = 0x14,
+      MIN_MAG_MIP_LINEAR = 0x15,
+      ANISOTROPIC = 0x55,
+      COMPARISON_MIN_MAG_MIP_POINT = 0x80,
+      COMPARISON_MIN_MAG_POINT_MIP_LINEAR = 0x81,
+      COMPARISON_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x84,
+      COMPARISON_MIN_POINT_MAG_MIP_LINEAR = 0x85,
+      COMPARISON_MIN_LINEAR_MAG_MIP_POINT = 0x90,
+      COMPARISON_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x91,
+      COMPARISON_MIN_MAG_LINEAR_MIP_POINT = 0x94,
+      COMPARISON_MIN_MAG_MIP_LINEAR = 0x95,
+      COMPARISON_ANISOTROPIC = 0xd5,
+      MINIMUM_MIN_MAG_MIP_POINT = 0x100,
+      MINIMUM_MIN_MAG_POINT_MIP_LINEAR = 0x101,
+      MINIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x104,
+      MINIMUM_MIN_POINT_MAG_MIP_LINEAR = 0x105,
+      MINIMUM_MIN_LINEAR_MAG_MIP_POINT = 0x110,
+      MINIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x111,
+      MINIMUM_MIN_MAG_LINEAR_MIP_POINT = 0x114,
+      MINIMUM_MIN_MAG_MIP_LINEAR = 0x115,
+      MINIMUM_ANISOTROPIC = 0x155,
+      MAXIMUM_MIN_MAG_MIP_POINT = 0x180,
+      MAXIMUM_MIN_MAG_POINT_MIP_LINEAR = 0x181,
+      MAXIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x184,
+      MAXIMUM_MIN_POINT_MAG_MIP_LINEAR = 0x185,
+      MAXIMUM_MIN_LINEAR_MAG_MIP_POINT = 0x190,
+      MAXIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x191,
+      MAXIMUM_MIN_MAG_LINEAR_MIP_POINT = 0x194,
+      MAXIMUM_MIN_MAG_MIP_LINEAR = 0x195,
+      MAXIMUM_ANISOTROPIC = 0x1d5
+    };
+  }
+
+  namespace TEXTURE_ADDRESS_MODE {
+    enum E {
+      WRAP = 1,
+      MIRROR = 2,
+      CLAMP = 3,
+      BORDER = 4,
+      MIRROR_ONCE = 5
+    };
+  }
+
+  struct SAMPLER_DESC
+  {
+    SAMPLER_FILTER::E filter;
+    TEXTURE_ADDRESS_MODE::E addressU;
+    TEXTURE_ADDRESS_MODE::E addressV;
+    TEXTURE_ADDRESS_MODE::E addressW;
+    float mipLODBias;
+    uint32 maxAnisotropy;
+    COMPARISON_FUNC::E comparisonFunc;
+    float borderColor[4];
+    float minLOD;
+    float maxLOD;
+
+    explicit SAMPLER_DESC(FORCE_INIT::E)
+    {
+      filter = SAMPLER_FILTER::MIN_MAG_MIP_LINEAR;
+      addressU = TEXTURE_ADDRESS_MODE::CLAMP;
+      addressV = TEXTURE_ADDRESS_MODE::CLAMP;
+      addressW = TEXTURE_ADDRESS_MODE::CLAMP;
+      mipLODBias = 0;
+      maxAnisotropy = 1;
+      comparisonFunc = COMPARISON_FUNC::NEVER;
+      borderColor[0] = 1.0f;
+      borderColor[1] = 1.0f;
+      borderColor[2] = 1.0f;
+      borderColor[3] = 1.0f;
+      minLOD = -3.402823466e+38F; // -FLT_MAX
+      maxLOD = 3.402823466e+38F;  //  FLT_MAX
+    }
+  };
+
+  namespace BLEND {
+    enum E {
+      ZERO = 1,
+      ONE = 2,
+      SRC_COLOR = 3,
+      INV_SRC_COLOR = 4,
+      SRC_ALPHA = 5,
+      INV_SRC_ALPHA = 6,
+      DEST_ALPHA = 7,
+      INV_DEST_ALPHA = 8,
+      DEST_COLOR = 9,
+      INV_DEST_COLOR = 10,
+      SRC_ALPHA_SAT = 11,
+      BLEND_FACTOR = 14,
+      INV_BLEND_FACTOR = 15,
+      SRC1_COLOR = 16,
+      INV_SRC1_COLOR = 17,
+      SRC1_ALPHA = 18,
+      INV_SRC1_ALPHA = 19
+    };
+  }
+
+  namespace BLEND_OP {
+    enum E {
+      ADD = 1,
+      SUBTRACT = 2,
+      REV_SUBTRACT = 3,
+      MIN = 4,
+      MAX = 5
+    };
+  }
+
+  namespace COLOR_WRITE_ENABLE {
+    enum E {
+      RED = 1,
+      GREEN = 2,
+      BLUE = 4,
+      ALPHA = 8,
+      ALL = (((RED | GREEN) | BLUE) | ALPHA)
+    };
+  }
+
+  namespace LOGIC_OP {
+    enum E {
+      CLEAR = 0,
+      SET = (CLEAR + 1),
+      COPY = (SET + 1),
+      COPY_INVERTED = (COPY + 1),
+      NOOP = (COPY_INVERTED + 1),
+      INVERT = (NOOP + 1),
+      AND = (INVERT + 1),
+      NAND = (AND + 1),
+      OR = (NAND + 1),
+      NOR = (OR + 1),
+      XOR = (NOR + 1),
+      EQUIV = (XOR + 1),
+      AND_REVERSE = (EQUIV + 1),
+      AND_INVERTED = (AND_REVERSE + 1),
+      OR_REVERSE = (AND_INVERTED + 1),
+      OR_INVERTED = (OR_REVERSE + 1)
+    };
+  }
+
+  struct RENDER_TARGET_BLEND_DESC
+  {
+    uint32 blendEnable;
+    uint32 logicOpEnable;
+    BLEND::E srcBlend;
+    BLEND::E destBlend;
+    BLEND_OP::E blendOp;
+    BLEND::E srcBlendAlpha;
+    BLEND::E destBlendAlpha;
+    BLEND_OP::E blendOpAlpha;
+    LOGIC_OP::E logicOp;
+    uint8 renderTargetWriteMask;
+  };
+
+  struct BLEND_DESC
+  {
+    uint32 alphaToCoverageEnable;
+    uint32 independentBlendEnable;
+    RENDER_TARGET_BLEND_DESC renderTarget[8];
+
+    explicit BLEND_DESC(FORCE_INIT::E) {
+      alphaToCoverageEnable = 0;
+      independentBlendEnable = 0;
+      const RENDER_TARGET_BLEND_DESC defaultRenderTargetBlendDesc =
+      {
+          0,0,
+          BLEND::ONE, BLEND::ZERO, BLEND_OP::ADD,
+          BLEND::ONE, BLEND::ZERO, BLEND_OP::ADD,
+          LOGIC_OP::NOOP,
+          COLOR_WRITE_ENABLE::ALL,
+      };
+
+      for (uint32 i = 0; i < 8; ++i) {
+        renderTarget[i] = defaultRenderTargetBlendDesc;
+      }
+    }
+  };
+
+} // namespace geEngineSDK

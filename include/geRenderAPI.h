@@ -27,6 +27,8 @@
 
 #include <geModule.h>
 #include <geColor.h>
+#include <geVector4.h>
+#include <geNumericLimits.h>
 
 namespace geEngineSDK {
   class GE_CORE_EXPORT RenderAPI : public Module<RenderAPI>
@@ -52,7 +54,7 @@ namespace geEngineSDK {
     resizeSwapChain(uint32 newWidth, uint32 newHeight) = 0;
 
     virtual bool
-    isMSAAFormatSupported(const TEXTURE_FORMAT::E format,
+    isMSAAFormatSupported(const GRAPHICS_FORMAT::E format,
                           int32& samplesPerPixel,
                           int32& sampleQuality) const = 0;
 
@@ -73,7 +75,7 @@ namespace geEngineSDK {
     virtual SPtr<Texture>
     createTexture(uint32 width,
                   uint32 height,
-                  TEXTURE_FORMAT::E format,
+                  GRAPHICS_FORMAT::E format,
                   uint32 bindFlags = BIND_FLAG::SHADER_RESOURCE,
                   uint32 mipLevels = 1,
                   RESOURCE_USAGE::E usage = RESOURCE_USAGE::DEFAULT,
@@ -86,14 +88,14 @@ namespace geEngineSDK {
     SPtr<Texture>
     createDepthStencilTexture(uint32 width,
                               uint32 height,
-                              TEXTURE_FORMAT::E format,
+                              GRAPHICS_FORMAT::E format,
                               uint32 sampleCount = 1,
                               bool isMSAA = false);
 
     SPtr<Texture>
     createRenderTargetTexture(uint32 width,
                               uint32 height,
-                              TEXTURE_FORMAT::E format,
+                              GRAPHICS_FORMAT::E format,
                               uint32 sampleCount = 1,
                               bool isMSAA = false);
 
@@ -106,6 +108,50 @@ namespace geEngineSDK {
 
     virtual SPtr<InputLayout>
     createInputLayoutFromShader(const WeakSPtr<VertexShader>& pVS) = 0;
+
+    /*************************************************************************/
+    // Create Buffers
+    /*************************************************************************/
+    virtual SPtr<VertexBuffer>
+    createVertexBuffer(const SPtr<VertexDeclaration>& pDecl,
+                       const SIZE_T sizeInBytes,
+                       const void* pInitialData = nullptr,
+                       const uint32 usage = RESOURCE_USAGE::DEFAULT) = 0;
+
+    SPtr<VertexBuffer>
+    createVertexBuffer(const SPtr<VertexDeclaration>& pDecl,
+                       const Vector<byte>& content,
+                       const uint32 usage = RESOURCE_USAGE::DEFAULT) {
+      return createVertexBuffer(pDecl, content.size(), content.data(), usage);
+    }
+
+    virtual SPtr<IndexBuffer>
+    createIndexBuffer(const SIZE_T sizeInBytes,
+                      const void* pInitialData = nullptr,
+                      const INDEX_BUFFER_FORMAT::E format = INDEX_BUFFER_FORMAT::R32_UINT,
+                      const uint32 usage = RESOURCE_USAGE::DEFAULT) = 0;
+
+    virtual SPtr<ConstantBuffer>
+    createConstantBuffer(const SIZE_T sizeInBytes,
+                         const void* pInitialData = nullptr,
+                         const uint32 usage = RESOURCE_USAGE::DEFAULT) = 0;
+
+    /*************************************************************************/
+    // Create State objects
+    /*************************************************************************/
+    virtual SPtr<RasterizerState>
+    createRasterizerState(const RASTERIZER_DESC& rasterDesc) = 0;
+
+    virtual SPtr<DepthStencilState>
+    createDepthStencilState(const DEPTH_STENCIL_DESC& depthStencilDesc) = 0;
+
+    virtual SPtr<BlendState>
+    createBlendState(const BLEND_DESC& blendDesc,
+                     Vector4 blendFactors = Vector4::ZERO,
+                     uint32 sampleMask = NumLimit::MAX_UINT32) = 0;
+
+    virtual SPtr<SamplerState>
+    createSamplerState(const SAMPLER_DESC& samplerDesc) = 0;
 
     /*************************************************************************/
     // Create Shaders
@@ -143,7 +189,7 @@ namespace geEngineSDK {
                     const GRAPHICS_BOX* pDstBox,
                     const void* pSrcData,
                     uint32 srcRowPitch,
-                    uint32 srcDepthPitch,
+                    uint32 srcDepthPitch = 0,
                     uint32 copyFlags = 0) = 0;
 
     virtual MappedSubresource

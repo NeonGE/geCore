@@ -29,7 +29,7 @@ namespace geEngineSDK {
   SPtr<Texture>
   RenderAPI::createDepthStencilTexture(uint32 width,
                                        uint32 height,
-                                       TEXTURE_FORMAT::E format,
+                                       GRAPHICS_FORMAT::E format,
                                        uint32 sampleCount,
                                        bool isMSAA)  {
     return createTexture(width, height, format, BIND_FLAG::DEPTH_STENCIL, 1,
@@ -39,7 +39,7 @@ namespace geEngineSDK {
   SPtr<Texture>
   RenderAPI::createRenderTargetTexture(uint32 width,
                                        uint32 height,
-                                       TEXTURE_FORMAT::E format,
+                                       GRAPHICS_FORMAT::E format,
                                        uint32 sampleCount,
                                        bool isMSAA) {
     return createTexture(width, height, format,
