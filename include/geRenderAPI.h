@@ -53,7 +53,7 @@ namespace geEngineSDK {
     virtual bool
     resizeSwapChain(uint32 newWidth, uint32 newHeight) = 0;
 
-    virtual bool
+    GE_NODISCARD virtual bool
     isMSAAFormatSupported(const GRAPHICS_FORMAT::E format,
                           int32& samplesPerPixel,
                           int32& sampleQuality) const = 0;
@@ -72,7 +72,7 @@ namespace geEngineSDK {
     // Create Objects
     /*************************************************************************/
 
-    virtual SPtr<Texture>
+    GE_NODISCARD virtual SPtr<Texture>
     createTexture(uint32 width,
                   uint32 height,
                   GRAPHICS_FORMAT::E format,
@@ -85,21 +85,21 @@ namespace geEngineSDK {
                   bool isCubeMap = false,
                   uint32 arraySize = 1) = 0;
 
-    SPtr<Texture>
+    GE_NODISCARD SPtr<Texture>
     createDepthStencilTexture(uint32 width,
                               uint32 height,
                               GRAPHICS_FORMAT::E format,
                               uint32 sampleCount = 1,
                               bool isMSAA = false);
 
-    SPtr<Texture>
+    GE_NODISCARD SPtr<Texture>
     createRenderTargetTexture(uint32 width,
                               uint32 height,
                               GRAPHICS_FORMAT::E format,
                               uint32 sampleCount = 1,
                               bool isMSAA = false);
 
-    virtual SPtr<VertexDeclaration>
+    GE_NODISCARD virtual SPtr<VertexDeclaration>
     createVertexDeclaration(const Vector<VertexElement>& elements) = 0;
 
     virtual SPtr<InputLayout>
@@ -241,10 +241,164 @@ namespace geEngineSDK {
     virtual void
     setViewports(const Vector<GRAPHICS_VIEWPORT>& viewports) = 0;
 
+    virtual void
+    setInputLayout(const WeakSPtr<InputLayout>& pInputLayout) = 0;
 
+    virtual void
+    setRasterizerState(const WeakSPtr<RasterizerState>& pRasterizerState) = 0;
 
+    virtual void
+    setDepthStencilState(const WeakSPtr<DepthStencilState>& pDepthStencilState,
+                         uint32 stencilRef = 0) = 0;
+
+    virtual void
+    setBlendState(const WeakSPtr<BlendState>& pBlendState) = 0;
+
+    virtual void
+    setVertexBuffer(const WeakSPtr<VertexBuffer>& pVertexBuffer,
+                    uint32 startSlot = 0,
+                    uint32 offset = 0) = 0;
+
+    virtual void
+    setIndexBuffer(const WeakSPtr<IndexBuffer>& pIndexBuffer,
+                   uint32 offset = 0) = 0;
+
+    /*************************************************************************/
+    // Set Shaders
+    /*************************************************************************/
+    virtual void
+    vsSetProgram(const WeakSPtr<VertexShader>& pInShader) = 0;
+    
+    virtual void
+    psSetProgram(const WeakSPtr<PixelShader>& pInShader) = 0;
+    
+    virtual void
+    gsSetProgram(const WeakSPtr<GeometryShader>& pInShader) = 0;
+    
+    virtual void
+    hsSetProgram(const WeakSPtr<HullShader>& pInShader) = 0;
+    
+    virtual void
+    dsSetProgram(const WeakSPtr<DomainShader>& pInShader) = 0;
+    
+    virtual void
+    csSetProgram(const WeakSPtr<ComputeShader>& pInShader) = 0;
+
+    /*************************************************************************/
+    // Set Shaders Resources
+    /*************************************************************************/
+    virtual void
+    vsSetShaderResource(const WeakSPtr<Texture>& pTexture,
+                        const uint32 startSlot = 0) = 0;
+
+    virtual void
+    psSetShaderResource(const WeakSPtr<Texture>& pTexture,
+                        const uint32 startSlot = 0) = 0;
+
+    virtual void
+    gsSetShaderResource(const WeakSPtr<Texture>& pTexture,
+                        const uint32 startSlot = 0) = 0;
+
+    virtual void
+    hsSetShaderResource(const WeakSPtr<Texture>& pTexture,
+                        const uint32 startSlot = 0) = 0;
+
+    virtual void
+    dsSetShaderResource(const WeakSPtr<Texture>& pTexture,
+                        const uint32 startSlot = 0) = 0;
+
+    virtual void
+    csSetShaderResource(const WeakSPtr<Texture>& pTexture,
+                        const uint32 startSlot = 0) = 0;
+
+    /*************************************************************************/
+    // Set Unordered Access Views
+    /*************************************************************************/
+    virtual void
+    csSetUnorderedAccessView(const WeakSPtr<Texture>& pTexture,
+                             const uint32 startSlot = 0) = 0;
+
+    /*************************************************************************/
+    // Set Constant Buffers
+    /*************************************************************************/
+    virtual void
+    vsSetConstantBuffer(const WeakSPtr<ConstantBuffer>& pBuffer,
+                        const uint32 startSlot = 0) = 0;
+
+    virtual void
+    psSetConstantBuffer(const WeakSPtr<ConstantBuffer>& pBuffer,
+                        const uint32 startSlot = 0) = 0;
+
+    virtual void
+    gsSetConstantBuffer(const WeakSPtr<ConstantBuffer>& pBuffer,
+                        const uint32 startSlot = 0) = 0;
+
+    virtual void
+    hsSetConstantBuffer(const WeakSPtr<ConstantBuffer>& pBuffer,
+                        const uint32 startSlot = 0) = 0;
+
+    virtual void
+    dsSetConstantBuffer(const WeakSPtr<ConstantBuffer>& pBuffer,
+                        const uint32 startSlot = 0) = 0;
+
+    virtual void
+    csSetConstantBuffer(const WeakSPtr<ConstantBuffer>& pBuffer,
+                        const uint32 startSlot = 0) = 0;
+
+    /*************************************************************************/
+    // Set Samplers
+    /*************************************************************************/
+    virtual void
+    vsSetSampler(const WeakSPtr<SamplerState>& pSampler,
+                 const uint32 startSlot = 0) = 0;
+
+    virtual void
+    psSetSampler(const WeakSPtr<SamplerState>& pSampler,
+                 const uint32 startSlot = 0) = 0;
+
+    virtual void
+    gsSetSampler(const WeakSPtr<SamplerState>& pSampler,
+                 const uint32 startSlot = 0) = 0;
+
+    virtual void
+    hsSetSampler(const WeakSPtr<SamplerState>& pSampler,
+                 const uint32 startSlot = 0) = 0;
+
+    virtual void
+    dsSetSampler(const WeakSPtr<SamplerState>& pSampler,
+                 const uint32 startSlot = 0) = 0;
+
+    virtual void
+    csSetSampler(const WeakSPtr<SamplerState>& pSampler,
+                 const uint32 startSlot = 0) = 0;
+
+    /*************************************************************************/
+    // Set Render Targets
+    /*************************************************************************/
     virtual void
     setRenderTargets(const Vector<RenderTarget>& pTargets,
                      const WeakSPtr<Texture>& pDepthStencilView) = 0;
+
+    /*************************************************************************/
+    // Draw Functions
+    /*************************************************************************/
+    virtual void
+    draw(uint32 vertexCount, uint32 startVertexLocation = 0) = 0;
+
+    virtual void
+    drawIndexed(uint32 indexCount,
+                uint32 startIndexLocation = 0,
+                int32 baseVertexLocation = 0) = 0;
+
+    virtual void
+    drawInstanced(uint32 vertexCountPerInstance,
+                  uint32 instanceCount,
+                  uint32 startVertexLocation = 0,
+                  uint32 startInstanceLocation = 0) = 0;
+
+    virtual void
+    dispatch(uint32 threadGroupCountX,
+             uint32 threadGroupCountY = 1,
+             uint32 threadGroupCountZ = 1) = 0;
   };
 }

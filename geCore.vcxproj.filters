@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Resources">
       <UniqueIdentifier>{db358f57-65a1-4aaf-a7d1-ba12287d0f4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Managers">
+      <UniqueIdentifier>{123da388-1735-4010-8ed1-abec87dcf98a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\gePrerequisitesCore.h">

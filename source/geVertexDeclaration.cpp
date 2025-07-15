@@ -130,7 +130,6 @@ namespace geEngineSDK {
       break;
     }
 
-    GE_EXCEPT(InvalidParametersException, "Invalid type");
     return 0;
   }
 
