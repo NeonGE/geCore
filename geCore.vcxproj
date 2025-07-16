@@ -307,6 +307,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\geCoreBaseApp.h" />
+    <ClInclude Include="include\geCoreFeatures.h" />
     <ClInclude Include="include\geGameConfig.h" />
     <ClInclude Include="include\geGraphicsInterfaces.h" />
     <ClInclude Include="include\geInputLayout.h" />

@@ -407,6 +407,40 @@ namespace geEngineSDK {
     VertexDeclarationProperties m_properties;
   };
 
+  class GE_CORE_EXPORT StreamOutputDeclaration
+  {
+   public:
+    StreamOutputDeclaration(const Vector<StreamOutputElement>& elements);
+    virtual ~StreamOutputDeclaration() = default;
+
+    /**
+     * @brief Returns the declaration properties associated with this stream output declaration.
+     */
+    const StreamOutputDeclarationProperties&
+    getProperties() const;
+
+    /**
+     * @brief Checks if this stream output declaration is compatible with another (e.g. from a shader).
+     *        All elements in the shader declaration must exist in this declaration.
+     * @param shaderDecl A weak pointer to the stream output declaration expected by the shader.
+     * @return true if compatible; false otherwise.
+     */
+    bool
+    isCompatible(const WeakSPtr<StreamOutputDeclaration>& shaderDecl);
+
+    /**
+     * @brief Returns a list of elements that are required by the shader declaration
+     *        but are missing from this declaration.
+     * @param shaderDecl A weak pointer to the expected shader declaration.
+     * @return A vector of missing StreamOutputElements.
+     */
+    Vector<StreamOutputElement>
+    getMissingElements(const WeakSPtr<StreamOutputDeclaration>& shaderDecl);
+
+   protected:
+    StreamOutputDeclarationProperties m_properties;
+  };
+
   /**
    * @brief Converts a vertex semantic enum to a readable name.
    * @param val 

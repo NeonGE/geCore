@@ -399,4 +399,121 @@ namespace geEngineSDK {
                           const StreamOutputDeclarationProperties& rhs) const {
     return !(*this == rhs);
   }
+
+  uint32
+  StreamOutputDeclarationProperties::getElementCount() const {
+    return static_cast<uint32>(m_elementList.size());
+  }
+
+  const Vector<StreamOutputElement>&
+  StreamOutputDeclarationProperties::getElements() const {
+    return m_elementList;
+  }
+
+  const StreamOutputElement*
+  StreamOutputDeclarationProperties::getElement(uint32 index) const {
+    if (index >= m_elementList.size()) {
+      return nullptr;
+    }
+
+    return &m_elementList[index];
+  }
+
+  Vector<StreamOutputElement>
+  StreamOutputDeclarationProperties::findElementsByOutputSlot(uint32 outputSlot) const {
+    Vector<StreamOutputElement> result;
+    for (const auto& elem : m_elementList)
+    {
+      if (elem.getOutputSlot() == outputSlot) {
+        result.push_back(elem);
+      }
+    }
+    return result;
+  }
+
+  uint32
+  StreamOutputDeclarationProperties::getComponentCountForOutputSlot(uint32 outputSlot) const {
+    uint32 total = 0;
+    for (const auto& elem : m_elementList)
+    {
+      if (elem.getOutputSlot() == outputSlot) {
+        total += elem.getComponentCount();
+      }
+    }
+    return total;
+  }
+
+  StreamOutputDeclaration::StreamOutputDeclaration(
+                             const Vector<StreamOutputElement>& elements)
+    : m_properties(elements)
+  {}
+
+  const StreamOutputDeclarationProperties&
+  StreamOutputDeclaration::getProperties() const {
+    return m_properties;
+  }
+
+  bool
+  StreamOutputDeclaration::isCompatible(const WeakSPtr<StreamOutputDeclaration>& shaderDecl) {
+    if (shaderDecl.expired()) {
+      return false;
+    }
+
+    auto pShaderDecl = shaderDecl.lock();
+    const auto& bufferProps = getProperties();
+    const auto& shaderProps = pShaderDecl->getProperties();
+
+    for (auto shaderIter = shaderProps.getElements().begin();
+           shaderIter != shaderProps.getElements().end(); ++shaderIter) {
+      const StreamOutputElement* foundElem = nullptr;
+      for (auto bufferIter = bufferProps.getElements().begin();
+             bufferIter != bufferProps.getElements().end(); ++bufferIter) {
+        if (shaderIter->getSemantic() == bufferIter->getSemantic() &&
+            shaderIter->getSemanticIndex() == bufferIter->getSemanticIndex()) {
+          foundElem = &(*bufferIter);
+          break;
+        }
+      }
+      if (!foundElem) {
+        // If the shader element is not found in the buffer properties, they are not compatible
+        return false;
+      }
+    }
+    // If we reach here, all shader elements were found in the buffer properties
+    return true;
+  }
+
+  Vector<StreamOutputElement>
+  StreamOutputDeclaration::getMissingElements(
+                             const WeakSPtr<StreamOutputDeclaration>& shaderDecl) {
+    Vector<StreamOutputElement> missingElements;
+    if (shaderDecl.expired()) {
+      return missingElements;
+    }
+
+    auto pShaderDecl = shaderDecl.lock();
+    const auto& bufferProps = getProperties();
+    const auto& shaderProps = pShaderDecl->getProperties();
+
+    for (auto shaderIter = shaderProps.getElements().begin();
+           shaderIter != shaderProps.getElements().end(); ++shaderIter) {
+      const StreamOutputElement* foundElem = nullptr;
+      for (auto bufferIter = bufferProps.getElements().begin();
+             bufferIter != bufferProps.getElements().end(); ++bufferIter) {
+        if (shaderIter->getSemantic() == bufferIter->getSemantic() &&
+            shaderIter->getSemanticIndex() == bufferIter->getSemanticIndex()) {
+          foundElem = &(*bufferIter);
+          break;
+        }
+      }
+      if (!foundElem) {
+        // If the shader element is not found in the buffer properties,
+        // they are not compatible
+        missingElements.push_back(*shaderIter);
+      }
+    }
+    // If we reach here, all shader elements were found in the buffer properties
+    return missingElements;
+  }
+
 }

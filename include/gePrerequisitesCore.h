@@ -18,6 +18,7 @@
  */
 /*****************************************************************************/
 #include <gePrerequisitesUtilities.h>
+#include "geCoreFeatures.h"
 
 /*****************************************************************************/
 /**
@@ -53,7 +54,10 @@
 #endif
 
 namespace geEngineSDK {
-	/** Default thread policy for the framework. Performs special startup/shutdown on threads managed by thread pool. */
+	/**
+	 * Default thread policy for the framework.
+	 * Performs special startup/shutdown on threads managed by thread pool.
+	 */
 	class GE_CORE_EXPORT ThreadDefaultPolicy
 	{
 	 public:

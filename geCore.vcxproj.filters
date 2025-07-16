@@ -66,6 +66,9 @@
     <ClInclude Include="include\geTextureManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="include\geCoreFeatures.h">
+      <Filter>Source Files\Prerequisites</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\geCoreBaseApp.cpp">

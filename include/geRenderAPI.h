@@ -65,19 +65,19 @@ namespace geEngineSDK {
     virtual void
     reportLiveObjects() = 0;
 
-    virtual WeakSPtr<Texture>
+    GE_NODISCARD virtual WeakSPtr<Texture>
     getBackBuffer() const = 0;
 
-    virtual WeakSPtr<RasterizerState>
+    GE_NODISCARD virtual WeakSPtr<RasterizerState>
     getCurrentRasterizerState() const = 0;
 
-    virtual WeakSPtr<DepthStencilState>
+    GE_NODISCARD virtual WeakSPtr<DepthStencilState>
     getCurrentDepthStencilState() const = 0;
 
-    virtual WeakSPtr<BlendState>
+    GE_NODISCARD virtual WeakSPtr<BlendState>
     getCurrentBlendState() const = 0;
 
-    virtual WeakSPtr<SamplerState>
+    GE_NODISCARD virtual WeakSPtr<SamplerState>
     getCurrentSamplerState(uint32 samplerSlot = 0) const = 0;
 
     /*************************************************************************/
@@ -114,36 +114,44 @@ namespace geEngineSDK {
     GE_NODISCARD virtual SPtr<VertexDeclaration>
     createVertexDeclaration(const Vector<VertexElement>& elements) = 0;
 
-    virtual SPtr<InputLayout>
+    GE_NODISCARD virtual SPtr<StreamOutputDeclaration>
+    createStreamOutputDeclaration(const Vector<StreamOutputElement>& elements) = 0;
+
+    GE_NODISCARD virtual SPtr<InputLayout>
     createInputLayout(const WeakSPtr<VertexDeclaration>& descArray,
                       const WeakSPtr<VertexShader>& pVS) = 0;
 
-    virtual SPtr<InputLayout>
+    GE_NODISCARD virtual SPtr<InputLayout>
     createInputLayoutFromShader(const WeakSPtr<VertexShader>& pVS) = 0;
 
     /*************************************************************************/
     // Create Buffers
     /*************************************************************************/
-    virtual SPtr<VertexBuffer>
+    GE_NODISCARD virtual SPtr<VertexBuffer>
     createVertexBuffer(const SPtr<VertexDeclaration>& pDecl,
                        const SIZE_T sizeInBytes,
                        const void* pInitialData = nullptr,
                        const uint32 usage = RESOURCE_USAGE::DEFAULT) = 0;
 
-    SPtr<VertexBuffer>
+    GE_NODISCARD SPtr<VertexBuffer>
     createVertexBuffer(const SPtr<VertexDeclaration>& pDecl,
                        const Vector<byte>& content,
                        const uint32 usage = RESOURCE_USAGE::DEFAULT) {
       return createVertexBuffer(pDecl, content.size(), content.data(), usage);
     }
 
-    virtual SPtr<IndexBuffer>
+    GE_NODISCARD virtual SPtr<StreamOutputBuffer>
+    createStreamOutputBuffer(const SPtr<StreamOutputDeclaration>& pDecl,
+                             const SIZE_T sizeInBytes,
+                             const uint32 usage = RESOURCE_USAGE::DEFAULT) = 0;
+
+    GE_NODISCARD virtual SPtr<IndexBuffer>
     createIndexBuffer(const SIZE_T sizeInBytes,
                       const void* pInitialData = nullptr,
                       const INDEX_BUFFER_FORMAT::E format = INDEX_BUFFER_FORMAT::R32_UINT,
                       const uint32 usage = RESOURCE_USAGE::DEFAULT) = 0;
 
-    virtual SPtr<ConstantBuffer>
+    GE_NODISCARD virtual SPtr<ConstantBuffer>
     createConstantBuffer(const SIZE_T sizeInBytes,
                          const void* pInitialData = nullptr,
                          const uint32 usage = RESOURCE_USAGE::DEFAULT) = 0;
@@ -151,18 +159,18 @@ namespace geEngineSDK {
     /*************************************************************************/
     // Create State objects
     /*************************************************************************/
-    virtual SPtr<RasterizerState>
+    GE_NODISCARD virtual SPtr<RasterizerState>
     createRasterizerState(const RASTERIZER_DESC& rasterDesc) = 0;
 
-    virtual SPtr<DepthStencilState>
+    GE_NODISCARD virtual SPtr<DepthStencilState>
     createDepthStencilState(const DEPTH_STENCIL_DESC& depthStencilDesc) = 0;
 
-    virtual SPtr<BlendState>
+    GE_NODISCARD virtual SPtr<BlendState>
     createBlendState(const BLEND_DESC& blendDesc,
                      Vector4 blendFactors = Vector4::ZERO,
                      uint32 sampleMask = NumLimit::MAX_UINT32) = 0;
 
-    virtual SPtr<SamplerState>
+    GE_NODISCARD virtual SPtr<SamplerState>
     createSamplerState(const SAMPLER_DESC& samplerDesc) = 0;
 
     /*************************************************************************/
@@ -174,22 +182,26 @@ namespace geEngineSDK {
                              const String& szEntryPoint,\
                              const String& szShaderModel
 
-    virtual SPtr<VertexShader>
+    GE_NODISCARD virtual SPtr<VertexShader>
     createVertexShader(CREATE_SHADER_PARAMS) = 0;
 
-    virtual SPtr<PixelShader>
+    GE_NODISCARD virtual SPtr<PixelShader>
     createPixelShader(CREATE_SHADER_PARAMS) = 0;
 
-    virtual SPtr<GeometryShader>
+    GE_NODISCARD virtual SPtr<GeometryShader>
     createGeometryShader(CREATE_SHADER_PARAMS) = 0;
 
-    virtual SPtr<HullShader>
+    GE_NODISCARD virtual SPtr<GeometryShader>
+    createGeometryShaderWithStreamOutput(CREATE_SHADER_PARAMS,
+                                         const SPtr<StreamOutputDeclaration>& pDecl) = 0;
+
+    GE_NODISCARD virtual SPtr<HullShader>
     createHullShader(CREATE_SHADER_PARAMS) = 0;
 
-    virtual SPtr<DomainShader>
+    GE_NODISCARD virtual SPtr<DomainShader>
     createDomainShader(CREATE_SHADER_PARAMS) = 0;
 
-    virtual SPtr<ComputeShader>
+    GE_NODISCARD virtual SPtr<ComputeShader>
     createComputeShader(CREATE_SHADER_PARAMS) = 0;
 
     /*************************************************************************/
@@ -204,7 +216,7 @@ namespace geEngineSDK {
                     uint32 srcDepthPitch = 0,
                     uint32 copyFlags = 0) = 0;
 
-    virtual MappedSubresource
+    GE_NODISCARD virtual MappedSubresource
     mapToRead(const WeakSPtr<GraphicsResource>& pResource,
               uint32 subResource = 0,
               uint32 mapFlags = 0) = 0;
@@ -390,6 +402,18 @@ namespace geEngineSDK {
     virtual void
     setRenderTargets(const Vector<RenderTarget>& pTargets,
                      const WeakSPtr<Texture>& pDepthStencilView) = 0;
+
+    virtual void
+    setStreamOutputTarget(const WeakSPtr<StreamOutputBuffer>& pBuffer) = 0;
+
+    /*************************************************************************/
+    // State Management Functions
+    /*************************************************************************/
+    virtual SPtr<PipelineState>
+    savePipelineState() const = 0;
+
+    virtual void
+    restorePipelineState(const WeakSPtr<PipelineState>& pState) = 0;
 
     /*************************************************************************/
     // Draw Functions

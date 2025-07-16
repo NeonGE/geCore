@@ -63,6 +63,23 @@ namespace geEngineSDK {
     SPtr<VertexDeclaration> m_pVertexDeclaration;
   };
 
+  class GE_CORE_EXPORT StreamOutputBuffer : public GraphicsBuffer
+  {
+   public:
+    virtual ~StreamOutputBuffer() = default;
+  
+    /**
+     * @brief Returns the stream output declaration associated with this buffer.
+     */
+    virtual WeakSPtr<StreamOutputDeclaration>
+    getStreamOutputDeclaration() const {
+      return m_pStreamOutputDeclaration;
+    }
+  
+   protected:
+    SPtr<StreamOutputDeclaration> m_pStreamOutputDeclaration;
+  };
+
   class GE_CORE_EXPORT IndexBuffer : public GraphicsBuffer
   {
    public:
@@ -132,6 +149,18 @@ namespace geEngineSDK {
 
     virtual void
     setDebugName(const String& name) = 0;
+  };
+
+  class GE_CORE_EXPORT PipelineState
+  {
+   public:
+    virtual ~PipelineState() = default;
+
+    /**
+     * @brief Releases resources held by the object.
+     */
+    virtual void
+    release() = 0;
   };
 
 }; // namespace geEngineSDK
