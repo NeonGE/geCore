@@ -31,7 +31,7 @@
 #include <geDynLibManager.h>
 #include <geRenderAPI.h>
 #include <geGameConfig.h>
-#include "geCoreBaseApp.h"
+#include <geTextureManager.h>
 
 namespace geEngineSDK {
   using sf::VideoMode;
@@ -206,6 +206,10 @@ namespace geEngineSDK {
     auto& renderApi = RenderAPI::instance();
     renderApi.initRenderAPI(m_window->getNativeHandle(),
                             gameConfig.get<bool>("WINDOW", "FULLSCREEN", false));
+
+    //Initialize the Graphics managers
+    TextureManager::startUp();
+
   }
 
   void
@@ -219,8 +223,17 @@ namespace geEngineSDK {
 
   void
   GE_COREBASE_CLASS::destroySystems() {
-    RenderAPI::shutDown();
+    //Destroy the Graphics Managers before the RenderAPI
+    if(TextureManager::isStarted()) {
+      TextureManager::shutDown();
+    }
 
+    //Destroy the Graphics Managers
+    if (RenderAPI::isStarted()) {
+      RenderAPI::shutDown();
+    }
+
+    //Destroy the rest of the systems
     DynLibManager::shutDown();
     Time::shutDown();
     TaskScheduler::shutDown();
@@ -345,12 +358,12 @@ namespace geEngineSDK {
         return;
       }
 
-      if (const auto* MouseEntered = wndEvent.getIf<sf::Event::MouseEntered>()) {
+      if (wndEvent.getIf<sf::Event::MouseEntered>()) {
         m_pInputEvents->onMouseEntered();
         return;
       }
 
-      if (const auto* MouseLeft = wndEvent.getIf<sf::Event::MouseLeft>()) {
+      if (wndEvent.getIf<sf::Event::MouseLeft>()) {
         m_pInputEvents->onMouseLeft();
         return;
       }
@@ -385,33 +398,39 @@ namespace geEngineSDK {
       }
 
       if (const auto* TouchBegan = wndEvent.getIf<sf::Event::TouchBegan>()) {
+        GE_UNREFERENCED_PARAMETER(TouchBegan);
         //wndEvent.touch
         return;
       }
 
       if (const auto* TouchMoved = wndEvent.getIf<sf::Event::TouchMoved>()) {
+        GE_UNREFERENCED_PARAMETER(TouchMoved);
         //wndEvent.touch
         return;
       }
 
       if (const auto* TouchEnded = wndEvent.getIf<sf::Event::TouchEnded>()) {
+        GE_UNREFERENCED_PARAMETER(TouchEnded);
         //wndEvent.touch
         return;
       }
 
       if (const auto* SensorChanged = wndEvent.getIf<sf::Event::SensorChanged>()) {
+        GE_UNREFERENCED_PARAMETER(SensorChanged);
         //wndEvent.sensor
         return;
       }
     }
 
     if (const auto* FocusLost = wndEvent.getIf<sf::Event::FocusLost>()) {
+      GE_UNREFERENCED_PARAMETER(FocusLost);
       m_windowHasFocus = false;
       m_pInputEvents->onFocusLost();
       return;
     }
 
     if (const auto* FocusGained = wndEvent.getIf<sf::Event::FocusGained>()) {
+      GE_UNREFERENCED_PARAMETER(FocusGained);
       m_windowHasFocus = true;
       m_pInputEvents->onFocusGained();
       return;

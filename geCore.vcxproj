@@ -318,6 +318,7 @@
     <ClInclude Include="include\geSamplerState.h" />
     <ClInclude Include="include\geShader.h" />
     <ClInclude Include="include\geTexture.h" />
+    <ClInclude Include="include\geTextureManager.h" />
     <ClInclude Include="include\geVertexDeclaration.h" />
   </ItemGroup>
   <ItemGroup>
@@ -329,6 +330,7 @@
     <ClCompile Include="source\geSamplerState.cpp" />
     <ClCompile Include="source\geShader.cpp" />
     <ClCompile Include="source\geTexture.cpp" />
+    <ClCompile Include="source\geTextureManager.cpp" />
     <ClCompile Include="source\geVertexDeclaration.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

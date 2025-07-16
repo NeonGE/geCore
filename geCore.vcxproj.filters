@@ -63,6 +63,9 @@
     <ClInclude Include="include\geResource.h">
       <Filter>Source Files\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="include\geTextureManager.h">
+      <Filter>Source Files\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\geCoreBaseApp.cpp">
@@ -91,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="source\geShader.cpp">
       <Filter>Source Files\GraphicsAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geTextureManager.cpp">
+      <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

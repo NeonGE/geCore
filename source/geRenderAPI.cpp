@@ -20,6 +20,8 @@
 #include <geRenderAPI.h>
 
 namespace geEngineSDK {
+  GE_LOG_CATEGORY_IMPL(RenderAPI);
+
   RenderAPI::RenderAPI()
   {}
 

@@ -68,6 +68,18 @@ namespace geEngineSDK {
     virtual WeakSPtr<Texture>
     getBackBuffer() const = 0;
 
+    virtual WeakSPtr<RasterizerState>
+    getCurrentRasterizerState() const = 0;
+
+    virtual WeakSPtr<DepthStencilState>
+    getCurrentDepthStencilState() const = 0;
+
+    virtual WeakSPtr<BlendState>
+    getCurrentBlendState() const = 0;
+
+    virtual WeakSPtr<SamplerState>
+    getCurrentSamplerState(uint32 samplerSlot = 0) const = 0;
+
     /*************************************************************************/
     // Create Objects
     /*************************************************************************/
@@ -401,4 +413,6 @@ namespace geEngineSDK {
              uint32 threadGroupCountY = 1,
              uint32 threadGroupCountZ = 1) = 0;
   };
+
+  GE_LOG_CATEGORY(RenderAPI, 100);
 }

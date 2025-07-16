@@ -155,6 +155,79 @@ namespace geEngineSDK {
     uint32 m_instanceStepRate;
   };
 
+  class GE_CORE_EXPORT StreamOutputElement
+  {
+   public:
+    StreamOutputElement() = default;
+    StreamOutputElement(uint32 outputSlot,
+                        VERTEX_ELEMENT_SEMANTIC::E semantic,
+                        uint32 semanticIndex = 0,
+                        uint8 componentStart = 0,
+                        uint8 componentCount = 4,
+                        uint8 streamIndex = 0,
+                        uint8 registerIndex = 0)
+      : m_outputSlot(outputSlot),
+        m_semantic(semantic),
+        m_semanticIndex(semanticIndex),
+        m_componentStart(componentStart),
+        m_componentCount(componentCount),
+        m_streamIndex(streamIndex),
+        m_registerIndex(registerIndex)
+    {}
+
+    bool
+    operator==(const StreamOutputElement& rhs) const;
+
+    bool
+    operator!=(const StreamOutputElement& rhs) const;
+
+    uint32
+    getOutputSlot() const {
+      return m_outputSlot;
+    }
+
+    VERTEX_ELEMENT_SEMANTIC::E getSemantic() const {
+      return m_semantic;
+    }
+
+    uint32
+    getSemanticIndex() const {
+      return m_semanticIndex;
+    }
+
+    uint8
+    getComponentStart() const {
+      return m_componentStart;
+    }
+
+    uint8
+    getComponentCount() const {
+      return m_componentCount;
+    }
+
+    uint8
+    getStreamIndex() const {
+      return m_streamIndex;
+    }
+
+    uint8
+    getRegisterIndex() const {
+      return m_registerIndex;
+    }
+
+    static SIZE_T
+    getHash(const StreamOutputElement& element);
+
+   private:
+    uint32 m_outputSlot;          // Which buffer to write to (same as OutputSlot in D3D11_SO_DECLARATION_ENTRY)
+    VERTEX_ELEMENT_SEMANTIC::E m_semantic;
+    uint32 m_semanticIndex;
+    uint8 m_componentStart;       // First component (0–3) to write
+    uint8 m_componentCount;       // How many components (1–4)
+    uint8 m_streamIndex;          // Which output stream (optional, default 0)
+    uint8 m_registerIndex;        // Shader output register index
+  };
+
   /**
    * @brief Represents the properties of a vertex declaration, providing access
    *        to its elements and related queries.
@@ -234,6 +307,61 @@ namespace geEngineSDK {
 
     Vector<VertexElement> m_elementList;
   };
+
+  class GE_CORE_EXPORT StreamOutputDeclarationProperties
+  {
+   public:
+    StreamOutputDeclarationProperties() = default;
+    StreamOutputDeclarationProperties(const Vector<StreamOutputElement>& elements);
+
+    bool
+    operator==(const StreamOutputDeclarationProperties& rhs) const;
+
+    bool
+    operator!=(const StreamOutputDeclarationProperties& rhs) const;
+
+    /**
+     * @brief Returns the number of elements in the stream output declaration.
+     */
+    uint32
+    getElementCount() const;
+
+    /**
+     * @brief Returns a list of stream output elements in the declaration.
+     */
+    const Vector<StreamOutputElement>&
+    getElements() const;
+
+    /**
+     * @brief Returns a single stream output element at the specified index.
+     *        Returns nullptr if index is out of range.
+     */
+    const StreamOutputElement*
+    getElement(uint32 index) const;
+
+    /**
+     * @brief Finds an element by semantic and index.
+     */
+    const StreamOutputElement*
+    findElementBySemantic(VERTEX_ELEMENT_SEMANTIC::E sem, uint32 semanticIndex = 0) const;
+
+    /**
+     * @brief Returns a list of all elements writing to the specified output slot.
+     */
+    Vector<StreamOutputElement>
+    findElementsByOutputSlot(uint32 outputSlot) const;
+
+    /**
+     * @brief Returns the total component count for the specified output slot.
+     *        (e.g. used for estimating stride size in SO buffer)
+     */
+    uint32
+    getComponentCountForOutputSlot(uint32 outputSlot) const;
+
+   protected:
+    Vector<StreamOutputElement> m_elementList;
+  };
+
 
   /**
    * @brief Represents a vertex declaration, which defines the layout of vertex

@@ -22,17 +22,17 @@
 namespace geEngineSDK {
 
   VertexElement::VertexElement(uint32 source,
-                               uint32 offset,
-                               VERTEX_ELEMENT_TYPE::E theType,
-                               VERTEX_ELEMENT_SEMANTIC::E semantic,
-                               uint32 index,
-                               uint32 instanceStepRate)
+    uint32 offset,
+    VERTEX_ELEMENT_TYPE::E theType,
+    VERTEX_ELEMENT_SEMANTIC::E semantic,
+    uint32 index,
+    uint32 instanceStepRate)
     : m_source(source),
-      m_offset(offset),
-      m_type(theType),
-      m_semantic(semantic),
-      m_index(index),
-      m_instanceStepRate(instanceStepRate)
+    m_offset(offset),
+    m_type(theType),
+    m_semantic(semantic),
+    m_index(index),
+    m_instanceStepRate(instanceStepRate)
   {}
 
   uint32
@@ -140,7 +140,6 @@ namespace geEngineSDK {
 #else
     return VERTEX_ELEMENT_TYPE::COLOR_ABGR; //Prefer GL format
 #endif
-
   }
 
   bool
@@ -171,15 +170,15 @@ namespace geEngineSDK {
   }
 
   VertexDeclarationProperties::VertexDeclarationProperties(
-                               const Vector<VertexElement>& elements) {
+    const Vector<VertexElement>& elements) {
     for (auto& elem : elements) {
       VERTEX_ELEMENT_TYPE::E type = elem.getType();
       m_elementList.emplace_back(elem.getStreamIndex(),
-                                 elem.getOffset(),
-                                 type,
-                                 elem.getSemantic(),
-                                 elem.getSemanticIndex(),
-                                 elem.getInstanceStepRate());
+        elem.getOffset(),
+        type,
+        elem.getSemantic(),
+        elem.getSemanticIndex(),
+        elem.getInstanceStepRate());
     }
   }
 
@@ -222,7 +221,7 @@ namespace geEngineSDK {
 
   const VertexElement*
   VertexDeclarationProperties::findElementBySemantic(VERTEX_ELEMENT_SEMANTIC::E sem,
-                                                     uint32 index) const {
+      uint32 index) const {
     for (auto& elem : m_elementList) {
       if (elem.getSemantic() == sem && elem.getSemanticIndex() == index) {
         return &elem;
@@ -259,7 +258,7 @@ namespace geEngineSDK {
 
   bool
   VertexDeclaration::isCompatible(const WeakSPtr<VertexDeclaration>& shaderDecl) {
-    if(shaderDecl.expired()) {
+    if (shaderDecl.expired()) {
       return false;
     }
 
@@ -268,18 +267,18 @@ namespace geEngineSDK {
     const auto& bufferProps = getProperties();
     const auto& shaderProps = pShaderDecl->getProperties();
 
-    for(auto shaderIter = shaderProps.getElements().begin();
-        shaderIter != shaderProps.getElements().end(); ++shaderIter) {
+    for (auto shaderIter = shaderProps.getElements().begin();
+      shaderIter != shaderProps.getElements().end(); ++shaderIter) {
       const VertexElement* foundElem = nullptr;
-      for(auto bufferIter = bufferProps.getElements().begin();
-          bufferIter != bufferProps.getElements().end(); ++bufferIter) {
-        if(shaderIter->getSemantic() == bufferIter->getSemantic() &&
-           shaderIter->getSemanticIndex() == bufferIter->getSemanticIndex()) {
+      for (auto bufferIter = bufferProps.getElements().begin();
+        bufferIter != bufferProps.getElements().end(); ++bufferIter) {
+        if (shaderIter->getSemantic() == bufferIter->getSemantic() &&
+          shaderIter->getSemanticIndex() == bufferIter->getSemanticIndex()) {
           foundElem = &(*bufferIter);
           break;
         }
       }
-      if(!foundElem) {
+      if (!foundElem) {
         // If the shader element is not found in the buffer properties, they are not compatible
         return false;
       }
@@ -302,10 +301,10 @@ namespace geEngineSDK {
     const auto& shaderProps = pShaderDecl->getProperties();
 
     for (auto shaderIter = shaderProps.getElements().begin();
-        shaderIter != shaderProps.getElements().end(); ++shaderIter) {
+      shaderIter != shaderProps.getElements().end(); ++shaderIter) {
       const VertexElement* foundElem = nullptr;
       for (auto bufferIter = bufferProps.getElements().begin();
-          bufferIter != bufferProps.getElements().end(); ++bufferIter) {
+        bufferIter != bufferProps.getElements().end(); ++bufferIter) {
         if (shaderIter->getSemantic() == bufferIter->getSemantic() &&
           shaderIter->getSemanticIndex() == bufferIter->getSemanticIndex()) {
           foundElem = &(*bufferIter);
@@ -323,7 +322,7 @@ namespace geEngineSDK {
   }
 
   String
-  geEngineSDK::toString(const VERTEX_ELEMENT_SEMANTIC::E& val) {
+  toString(const VERTEX_ELEMENT_SEMANTIC::E& val) {
     switch (val)
     {
     case VERTEX_ELEMENT_SEMANTIC::POSITION:
@@ -353,4 +352,51 @@ namespace geEngineSDK {
     return "UNKNOWN_SEMANTIC";
   }
 
-} // namespace geEngineSDK
+  bool
+  StreamOutputElement::operator==(const StreamOutputElement& rhs) const {
+    return (m_outputSlot == rhs.m_outputSlot &&
+      m_semantic == rhs.m_semantic &&
+      m_semanticIndex == rhs.m_semanticIndex &&
+      m_componentStart == rhs.m_componentStart &&
+      m_componentCount == rhs.m_componentCount &&
+      m_streamIndex == rhs.m_streamIndex &&
+      m_registerIndex == rhs.m_registerIndex);
+  }
+
+  bool
+  StreamOutputElement::operator!=(const StreamOutputElement& rhs) const {
+    return !(*this == rhs);
+  }
+
+  SIZE_T
+  StreamOutputElement::getHash(const StreamOutputElement& element) {
+    SIZE_T hash = 0;
+    ge_hash_combine(hash, element.m_outputSlot);
+    ge_hash_combine(hash, element.m_semantic);
+    ge_hash_combine(hash, element.m_semanticIndex);
+    ge_hash_combine(hash, element.m_componentStart);
+    ge_hash_combine(hash, element.m_componentCount);
+    ge_hash_combine(hash, element.m_streamIndex);
+    ge_hash_combine(hash, element.m_registerIndex);
+    return hash;
+  }
+
+  StreamOutputDeclarationProperties::StreamOutputDeclarationProperties(
+    const Vector<StreamOutputElement>& elements)
+    : m_elementList(elements) {
+      {}
+
+  } // namespace geEngineSDK
+
+  bool
+  StreamOutputDeclarationProperties::operator==(
+                          const StreamOutputDeclarationProperties& rhs) const {
+    return m_elementList == rhs.m_elementList;
+  }
+
+  bool
+  StreamOutputDeclarationProperties::operator!=(
+                          const StreamOutputDeclarationProperties& rhs) const {
+    return !(*this == rhs);
+  }
+}
