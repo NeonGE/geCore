@@ -433,6 +433,9 @@ namespace geEngineSDK {
                   uint32 startInstanceLocation = 0) = 0;
 
     virtual void
+    drawAuto() = 0;
+
+    virtual void
     dispatch(uint32 threadGroupCountX,
              uint32 threadGroupCountY = 1,
              uint32 threadGroupCountZ = 1) = 0;

@@ -154,6 +154,7 @@ namespace geEngineSDK {
   class GE_CORE_EXPORT PipelineState
   {
    public:
+    PipelineState() = default;
     virtual ~PipelineState() = default;
 
     /**
