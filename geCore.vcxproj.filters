@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Managers">
       <UniqueIdentifier>{123da388-1735-4010-8ed1-abec87dcf98a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\FileTracker">
+      <UniqueIdentifier>{b2dba511-a718-42c9-9800-11fc0af24b25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\gePrerequisitesCore.h">
@@ -66,8 +69,17 @@
     <ClInclude Include="include\geTextureManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="include\geFileTracker.h">
+      <Filter>Source Files\FileTracker</Filter>
+    </ClInclude>
     <ClInclude Include="include\geCoreFeatures.h">
-      <Filter>Source Files\Prerequisites</Filter>
+      <Filter>Source Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geResourceImporter.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\geICodec.h">
+      <Filter>Source Files\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +112,15 @@
     </ClCompile>
     <ClCompile Include="source\geTextureManager.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geFileTracker.cpp">
+      <Filter>Source Files\FileTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geResourceImporter.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geICodec.cpp">
+      <Filter>Source Files\Resources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

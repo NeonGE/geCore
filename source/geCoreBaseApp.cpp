@@ -33,6 +33,10 @@
 #include <geGameConfig.h>
 #include <geTextureManager.h>
 
+#if USING(FILE_TRACKER)
+#include <geFileTracker.h>
+#endif
+
 namespace geEngineSDK {
   using sf::VideoMode;
 
@@ -171,6 +175,11 @@ namespace geEngineSDK {
     TaskScheduler::startUp();
     Time::startUp();
     DynLibManager::startUp();
+
+    //Create the optional systems
+#if USING(FILE_TRACKER)
+    FileTracker::startUp();
+#endif
   }
 
   void

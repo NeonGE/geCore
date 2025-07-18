@@ -137,6 +137,7 @@
       <UseFullPaths>false</UseFullPaths>
       <AdditionalOptions>/bigobj</AdditionalOptions>
       <AdditionalIncludeDirectories>$(DEVLIBS)SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -230,6 +231,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <AdditionalOptions>/bigobj</AdditionalOptions>
       <AdditionalIncludeDirectories>$(DEVLIBS)SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -261,6 +263,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <AdditionalOptions>/bigobj</AdditionalOptions>
       <AdditionalIncludeDirectories>$(DEVLIBS)SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -308,14 +311,17 @@
   <ItemGroup>
     <ClInclude Include="include\geCoreBaseApp.h" />
     <ClInclude Include="include\geCoreFeatures.h" />
+    <ClInclude Include="include\geFileTracker.h" />
     <ClInclude Include="include\geGameConfig.h" />
     <ClInclude Include="include\geGraphicsInterfaces.h" />
+    <ClInclude Include="include\geICodec.h" />
     <ClInclude Include="include\geInputLayout.h" />
     <ClInclude Include="include\geRasterizationState.h" />
     <ClInclude Include="include\geRenderAPI.h" />
     <ClInclude Include="include\gePrerequisitesCore.h" />
     <ClInclude Include="include\geGraphicsTypes.h" />
     <ClInclude Include="include\geResource.h" />
+    <ClInclude Include="include\geResourceImporter.h" />
     <ClInclude Include="include\geSamplerState.h" />
     <ClInclude Include="include\geShader.h" />
     <ClInclude Include="include\geTexture.h" />
@@ -324,10 +330,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\geCoreBaseApp.cpp" />
+    <ClCompile Include="source\geFileTracker.cpp" />
     <ClCompile Include="source\geGameConfig.cpp" />
+    <ClCompile Include="source\geICodec.cpp" />
     <ClCompile Include="source\geInputLayout.cpp" />
     <ClCompile Include="source\geRasterizationState.cpp" />
     <ClCompile Include="source\geRenderAPI.cpp" />
+    <ClCompile Include="source\geResourceImporter.cpp" />
     <ClCompile Include="source\geSamplerState.cpp" />
     <ClCompile Include="source\geShader.cpp" />
     <ClCompile Include="source\geTexture.cpp" />
