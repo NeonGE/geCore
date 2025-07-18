@@ -137,7 +137,6 @@
       <UseFullPaths>false</UseFullPaths>
       <AdditionalOptions>/bigobj</AdditionalOptions>
       <AdditionalIncludeDirectories>$(DEVLIBS)SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -169,7 +168,6 @@
       <UseFullPaths>false</UseFullPaths>
       <AdditionalOptions>/bigobj</AdditionalOptions>
       <AdditionalIncludeDirectories>$(DEVLIBS)SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -231,7 +229,6 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <AdditionalOptions>/bigobj</AdditionalOptions>
       <AdditionalIncludeDirectories>$(DEVLIBS)SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -263,7 +260,6 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <AdditionalOptions>/bigobj</AdditionalOptions>
       <AdditionalIncludeDirectories>$(DEVLIBS)SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
